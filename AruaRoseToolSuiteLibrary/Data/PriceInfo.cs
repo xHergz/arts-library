@@ -24,13 +24,13 @@ namespace AruaRoseToolSuiteLibrary.Data
 
         public IEnumerable<int> LowSellPrices { get { return _lowSellPrices; } }
 
-        public IEnumerable<int> HighBuyPrices { get { return _highSellPrices; } }
+        public IEnumerable<int> HighBuyPrices { get { return _highBuyPrices; } }
 
         public IEnumerable<int> LowBuyPrices { get { return _lowBuyPrices; } }
 
-        public int? AverageOneDay { get; private set; }
+        public int? OneDayAverage { get; private set; }
 
-        public int? AverageSevenDay { get; private set; }
+        public int? SevenDayAverage { get; private set; }
 
         public string Error { get; private set; }
 
@@ -42,24 +42,44 @@ namespace AruaRoseToolSuiteLibrary.Data
             _highSellPrices = new List<int>();
             _lowSellPrices = new List<int>();
             _highBuyPrices = new List<int>();
-            _lowSellPrices = new List<int>();
-            AverageOneDay = null;
-            AverageSevenDay = null;
+            _lowBuyPrices = new List<int>();
+            OneDayAverage = null;
+            SevenDayAverage = null;
             Error = error;
         }
 
-        public PriceInfo(int itemId, string itemName, int averageOneDay, int averageSevenDay)
+        public PriceInfo(int itemId, string itemName, int oneDayAverage, int seventDayAverage)
         {
-            Success = false;
+            Success = true;
             ItemId = itemId;
             ItemName = itemName;
             _highSellPrices = new List<int>();
             _lowSellPrices = new List<int>();
             _highBuyPrices = new List<int>();
-            _lowSellPrices = new List<int>();
-            AverageOneDay = null;
-            AverageSevenDay = null;
+            _lowBuyPrices = new List<int>();
+            OneDayAverage = oneDayAverage;
+            SevenDayAverage = seventDayAverage;
             Error = string.Empty;
+        }
+
+        public void AddHighSellPrice(int price)
+        {
+            _highSellPrices.Add(price);
+        }
+
+        public void AddLowSellPrice(int price)
+        {
+            _lowSellPrices.Add(price);
+        }
+
+        public void AddHighBuyPrice(int price)
+        {
+            _highBuyPrices.Add(price);
+        }
+
+        public void AddLowBuyPrice(int price)
+        {
+            _lowBuyPrices.Add(price);
         }
     }
 }
