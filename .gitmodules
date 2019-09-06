@@ -1,0 +1,3 @@
+[submodule "HergBotRestClient"]
+	path = HergBotRestClient
+	url = https://github.com/HergBot/rest-client-csharp

@@ -1,22 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Moq;
-using NUnit.Framework;
-
-using AruaRoseToolSuiteLibrary.Api;
-using HergBot.RestClient;
-using HergBot.RestClient.Http;
-using AruaRoseToolSuiteLibrary.Data;
-
-namespace AruaRoseToolSuiteLibrary_Tests
+﻿namespace AruaRoseToolSuiteLibrary_Tests.Data
 {
-    public class AruaApi_Tests
+    public class AruaApiResponse
     {
-        private const string SUCCESS_PRICE_INFO_RESPONSE = @"{
+        public static string SUCCESS = @"{
             ""success"":true,
             ""item"":""12000088"",
             ""name"":""Lisent(Au)"",
@@ -72,38 +58,11 @@ namespace AruaRoseToolSuiteLibrary_Tests
             ""average_7day"":""13480910""
         }";
 
-        private const string ERROR_PRICE_INFO_RESPONSE = @"{
+        public static string ERROR = @"{
             ""success"":false,
             ""error"":""invalid_item""
         }";
 
-        private const string TEST_KEY = "test_key";
-
-        private Mock<IRestClient> _mockRestClient;
-
-        private AruaApi _aruaApi;
-
-        private Item _testItem;
-
-        [SetUp]
-        public void SetUp()
-        {
-            _mockRestClient = new Mock<IRestClient>();
-            _aruaApi = new AruaApi(_mockRestClient.Object, TEST_KEY);
-            _testItem = new Item(12000088, "Lisent (Au)", "someIcon.png");
-        }
-
-        [Test]
-        public void GetItemPriceInfo_WithValidItem_ReturnsResponse()
-        {
-            MockResponse(SUCCESS_PRICE_INFO_RESPONSE);
-            _aruaApi.GetItemPriceInfo(_testItem);
-        }
-
-        private void MockResponse(string response)
-        {
-            _mockRestClient.Setup(x => x.Get(It.IsAny<string>(), It.IsAny<QueryParameter>()))
-                .Returns(new HttpResponse("www.test.com", System.Net.HttpStatusCode.OK, response, HttpVerb.GET));
-        }
+        public static string EMPTY = string.Empty;
     }
 }
