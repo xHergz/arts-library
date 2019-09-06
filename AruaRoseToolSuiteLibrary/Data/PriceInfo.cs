@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using Newtonsoft.Json;
 
 namespace AruaRoseToolSuiteLibrary.Data
 {
@@ -16,7 +17,7 @@ namespace AruaRoseToolSuiteLibrary.Data
 
         public bool Success { get; private set; }
 
-        public int? ItemId { get; private set; }
+        public int ItemId { get; private set; }
 
         public string ItemName { get; private set; }
 
@@ -28,58 +29,26 @@ namespace AruaRoseToolSuiteLibrary.Data
 
         public IEnumerable<int> LowBuyPrices { get { return _lowBuyPrices; } }
 
-        public int? OneDayAverage { get; private set; }
+        public int OneDayAverage { get; private set; }
 
-        public int? SevenDayAverage { get; private set; }
+        public int SevenDayAverage { get; private set; }
 
         public string Error { get; private set; }
 
-        public PriceInfo(string error)
+        [JsonConstructor]
+        public PriceInfo(bool success, string error, int item, string name, List<int> market_sell_prices_high, List<int> market_sell_prices_low,
+            List<int> market_buy_prices_high, List<int> market_buy_prices_low, int average_1day, int average_7day)
         {
-            Success = false;
-            ItemId = null;
-            ItemName = string.Empty;
-            _highSellPrices = new List<int>();
-            _lowSellPrices = new List<int>();
-            _highBuyPrices = new List<int>();
-            _lowBuyPrices = new List<int>();
-            OneDayAverage = null;
-            SevenDayAverage = null;
-            Error = error;
-        }
-
-        public PriceInfo(int itemId, string itemName, int oneDayAverage, int seventDayAverage)
-        {
-            Success = true;
-            ItemId = itemId;
-            ItemName = itemName;
-            _highSellPrices = new List<int>();
-            _lowSellPrices = new List<int>();
-            _highBuyPrices = new List<int>();
-            _lowBuyPrices = new List<int>();
-            OneDayAverage = oneDayAverage;
-            SevenDayAverage = seventDayAverage;
-            Error = string.Empty;
-        }
-
-        public void AddHighSellPrice(int price)
-        {
-            _highSellPrices.Add(price);
-        }
-
-        public void AddLowSellPrice(int price)
-        {
-            _lowSellPrices.Add(price);
-        }
-
-        public void AddHighBuyPrice(int price)
-        {
-            _highBuyPrices.Add(price);
-        }
-
-        public void AddLowBuyPrice(int price)
-        {
-            _lowBuyPrices.Add(price);
+            Success = success;
+            Error = error ?? string.Empty;
+            ItemId = item;
+            ItemName = name ?? string.Empty;
+            _highSellPrices = market_sell_prices_high ?? new List<int>();
+            _lowSellPrices = market_sell_prices_low ?? new List<int>();
+            _highBuyPrices = market_buy_prices_high ?? new List<int>();
+            _lowBuyPrices = market_buy_prices_low ?? new List<int>();
+            OneDayAverage = average_1day;
+            SevenDayAverage = average_7day;
         }
     }
 }
