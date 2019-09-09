@@ -15,23 +15,23 @@ namespace AruaRoseToolSuiteLibrary_Tests
         [Test]
         public void Constructor_WithSuccessfulResponseJson_ReturnsValidInfo()
         {
-            _priceInfo = JsonConvert.DeserializeObject<PriceInfo>(TestData.ARUA_API_SUCCESS_RESPONSE);
+            _priceInfo = JsonConvert.DeserializeObject<PriceInfo>(PriceInfoTestData.SUCCESS_PRICE_INFO_JSON);
             Assert.IsTrue(_priceInfo.Success);
-            Assert.AreEqual(TestData.ITEM_ID, _priceInfo.ItemId);
-            Assert.AreEqual(TestData.ITEM_NAME, _priceInfo.ItemName);
-            Assert.IsTrue(_priceInfo.HighSellPrices.Any());
-            Assert.IsTrue(_priceInfo.LowSellPrices.Any());
-            Assert.IsTrue(_priceInfo.HighBuyPrices.Any());
-            Assert.IsTrue(_priceInfo.LowBuyPrices.Any());
-            Assert.AreEqual(TestData.ONE_DAY_AVERAGE, _priceInfo.OneDayAverage);
-            Assert.AreEqual(TestData.SEVEN_DAY_AVERAGE, _priceInfo.SevenDayAverage);
+            Assert.AreEqual(ItemTestData.ITEM_ID, _priceInfo.ItemId);
+            Assert.AreEqual(ItemTestData.ITEM_NAME, _priceInfo.ItemName);
+            Assert.AreEqual(PriceInfoTestData.HIGH_SELL_PRICES, _priceInfo.HighSellPrices);
+            Assert.AreEqual(PriceInfoTestData.LOW_SELL_PRICES, _priceInfo.LowSellPrices);
+            Assert.AreEqual(PriceInfoTestData.HIGH_BUY_PRICES, _priceInfo.HighBuyPrices);
+            Assert.AreEqual(PriceInfoTestData.LOW_BUY_PRICES, _priceInfo.LowBuyPrices);
+            Assert.AreEqual(PriceInfoTestData.ONE_DAY_AVERAGE, _priceInfo.OneDayAverage);
+            Assert.AreEqual(PriceInfoTestData.SEVEN_DAY_AVERAGE, _priceInfo.SevenDayAverage);
             Assert.IsEmpty(_priceInfo.Error);
         }
 
         [Test]
         public void Constructor_WithErrorResponseJson_ReturnsErrorInfo()
         {
-            _priceInfo = JsonConvert.DeserializeObject<PriceInfo>(TestData.ARUA_API_ERROR_RESPONSE);
+            _priceInfo = JsonConvert.DeserializeObject<PriceInfo>(PriceInfoTestData.ERROR_PRICE_INFO_JSON);
             Assert.IsFalse(_priceInfo.Success);
             Assert.AreEqual(0, _priceInfo.ItemId);
             Assert.AreEqual(string.Empty, _priceInfo.ItemName);
@@ -41,13 +41,13 @@ namespace AruaRoseToolSuiteLibrary_Tests
             Assert.IsFalse(_priceInfo.LowBuyPrices.Any());
             Assert.AreEqual(0, _priceInfo.OneDayAverage);
             Assert.AreEqual(0, _priceInfo.SevenDayAverage);
-            Assert.AreEqual(TestData.ERROR, _priceInfo.Error);
+            Assert.AreEqual(PriceInfoTestData.ERROR, _priceInfo.Error);
         }
 
         [Test]
-        public void Constructor_WithEmptyResponseJson_ReturnsEmptyInfo()
+        public void Constructor_WithInvalidResponseJson_ReturnsDefaultInfo()
         {
-            _priceInfo = JsonConvert.DeserializeObject<PriceInfo>(TestData.ARUA_API_ERROR_RESPONSE);
+            _priceInfo = JsonConvert.DeserializeObject<PriceInfo>(PriceInfoTestData.INVALID_PRICE_INFO_JSON);
             Assert.IsFalse(_priceInfo.Success);
             Assert.AreEqual(0, _priceInfo.ItemId);
             Assert.IsEmpty(_priceInfo.ItemName);
@@ -57,7 +57,14 @@ namespace AruaRoseToolSuiteLibrary_Tests
             Assert.IsFalse(_priceInfo.LowBuyPrices.Any());
             Assert.AreEqual(0, _priceInfo.OneDayAverage);
             Assert.AreEqual(0, _priceInfo.SevenDayAverage);
-            Assert.AreEqual(TestData.ERROR, _priceInfo.Error);
+            Assert.IsEmpty(_priceInfo.Error);
+        }
+
+        [Test]
+        public void Constructor_WithEmptyResponseJson_ReturnsNull()
+        {
+            _priceInfo = JsonConvert.DeserializeObject<PriceInfo>(string.Empty);
+            Assert.IsNull(_priceInfo);
         }
     }
 }

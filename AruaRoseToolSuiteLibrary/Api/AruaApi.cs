@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 using AruaRoseToolSuiteLibrary.Data;
 using HergBot.RestClient;
@@ -33,7 +29,7 @@ namespace AruaRoseToolSuiteLibrary.Api
             _aruaApiKey = apiKey;
         }
 
-        public PriceInfo GetItemPriceInfo(Item item)
+        public PriceInfo GetItemPriceInfo(StockItem item)
         {
             QueryParameter itemPriceQuery = ConstructApiQuery(_aruaApiKey, ITEM_TYPE, item.ItemId.ToString());
             HttpResponse itemPriceResponse = null;

@@ -1,10 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Newtonsoft.Json;
 
 namespace AruaRoseToolSuiteLibrary.Data
 {
-    class StockItemGroup
+    public class StockItemGroup
     {
+        public int StockItemGroupId { get; private set; }
+
+        public string GroupName { get; private set; }
+
+        [JsonConstructor]
+        public StockItemGroup(int stockItemGroupId, string groupName)
+        {
+            StockItemGroupId = stockItemGroupId;
+            GroupName = groupName;
+        }
     }
 }
