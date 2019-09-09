@@ -1,103 +1,92 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Moq;
+﻿using Moq;
 using NUnit.Framework;
 
 using AruaRoseToolSuiteLibrary.Api;
+using AruaRoseToolSuiteLibrary.Data;
+using AruaRoseToolSuiteLibrary_Tests.Data;
 using HergBot.RestClient;
 using HergBot.RestClient.Http;
-using AruaRoseToolSuiteLibrary.Data;
 
 namespace AruaRoseToolSuiteLibrary_Tests
 {
     public class AruaApi_Tests
     {
-        private const string SUCCESS_PRICE_INFO_RESPONSE = @"{
-            ""success"":true,
-            ""item"":""12000088"",
-            ""name"":""Lisent(Au)"",
-            ""market_sell_prices_high"":[
-                ""30000000"",
-                ""30000000"",
-                ""30000000"",
-                ""30000000"",
-                ""28500000"",
-                ""20899000"",
-                ""20000000"",
-                ""20000000"",
-                ""18000000"",
-                ""18000000""
-            ],
-            ""market_sell_prices_low"":[
-                ""12500000"",
-                ""12500000"",
-                ""12999999"",
-                ""13000000"",
-                ""13000000"",
-                ""13000000"",
-                ""13099999"",
-                ""13188888"",
-                ""13200000"",
-                ""13400000""
-            ],
-            ""market_buy_prices_high"":[
-                ""12100000"",
-                ""12000000"",
-                ""12000000"",
-                ""12000000"",
-                ""11912000"",
-                ""11588888"",
-                ""11500000"",
-                ""10000000"",
-                ""1844"",
-                ""1""
-            ],
-            ""market_buy_prices_low"":[
-                ""1"",
-                ""1844"",
-                ""10000000"",
-                ""11500000"",
-                ""11588888"",
-                ""11912000"",
-                ""12000000"",
-                ""12000000"",
-                ""12000000"",
-                ""12100000""
-            ],
-            ""average_1day"":""12899144"",
-            ""average_7day"":""13480910""
-        }";
-
-        private const string ERROR_PRICE_INFO_RESPONSE = @"{
-            ""success"":false,
-            ""error"":""invalid_item""
-        }";
-
         private const string TEST_KEY = "test_key";
 
         private Mock<IRestClient> _mockRestClient;
 
         private AruaApi _aruaApi;
 
-        private Item _testItem;
+        private StockItem _testItem;
 
         [SetUp]
         public void SetUp()
         {
             _mockRestClient = new Mock<IRestClient>();
             _aruaApi = new AruaApi(_mockRestClient.Object, TEST_KEY);
-            _testItem = new Item(12000088, "Lisent (Au)", "someIcon.png");
+            _testItem = StockItemTestData.Generate();
         }
 
         [Test]
-        public void GetItemPriceInfo_WithValidItem_ReturnsResponse()
+        public void GetItemPriceInfo_WithSuccessfulResponse_ReturnsInfo()
         {
-            MockResponse(SUCCESS_PRICE_INFO_RESPONSE);
-            _aruaApi.GetItemPriceInfo(_testItem);
+            PriceInfo expected = PriceInfoTestData.GenerateSuccesfulInfo();
+            MockResponse(PriceInfoTestData.SUCCESS_PRICE_INFO_JSON);
+            PriceInfo info = _aruaApi.GetItemPriceInfo(_testItem);
+            Assert.AreEqual(expected.Success, info.Success);
+            Assert.AreEqual(expected.Error, info.Error);
+            Assert.AreEqual(expected.ItemId, info.ItemId);
+            Assert.AreEqual(expected.ItemName, info.ItemName);
+            Assert.AreEqual(expected.HighSellPrices, info.HighSellPrices);
+            Assert.AreEqual(expected.LowSellPrices, info.LowSellPrices);
+            Assert.AreEqual(expected.HighSellPrices, info.HighSellPrices);
+            Assert.AreEqual(expected.LowSellPrices, info.LowSellPrices);
+            Assert.AreEqual(expected.OneDayAverage, info.OneDayAverage);
+            Assert.AreEqual(expected.SevenDayAverage, info.SevenDayAverage);
+        }
+
+        [Test]
+        public void GetItemPriceInfo_WithErrorResponse_ReturnsError()
+        {
+            PriceInfo expected = PriceInfoTestData.GenerateErrorInfo();
+            MockResponse(PriceInfoTestData.ERROR_PRICE_INFO_JSON);
+            PriceInfo info = _aruaApi.GetItemPriceInfo(_testItem);
+            Assert.AreEqual(expected.Success, info.Success);
+            Assert.AreEqual(expected.Error, info.Error);
+            Assert.AreEqual(expected.ItemId, info.ItemId);
+            Assert.AreEqual(expected.ItemName, info.ItemName);
+            Assert.AreEqual(expected.HighSellPrices, info.HighSellPrices);
+            Assert.AreEqual(expected.LowSellPrices, info.LowSellPrices);
+            Assert.AreEqual(expected.HighSellPrices, info.HighSellPrices);
+            Assert.AreEqual(expected.LowSellPrices, info.LowSellPrices);
+            Assert.AreEqual(expected.OneDayAverage, info.OneDayAverage);
+            Assert.AreEqual(expected.SevenDayAverage, info.SevenDayAverage);
+        }
+
+        [Test]
+        public void GetItemPriceInfo_WithInvalidResponse_ReturnsNull()
+        {
+            PriceInfo expected = PriceInfoTestData.GenerateInvalidInfo();
+            MockResponse(PriceInfoTestData.INVALID_PRICE_INFO_JSON);
+            PriceInfo info = _aruaApi.GetItemPriceInfo(_testItem);
+            Assert.AreEqual(expected.Success, info.Success);
+            Assert.AreEqual(expected.Error, info.Error);
+            Assert.AreEqual(expected.ItemId, info.ItemId);
+            Assert.AreEqual(expected.ItemName, info.ItemName);
+            Assert.AreEqual(expected.HighSellPrices, info.HighSellPrices);
+            Assert.AreEqual(expected.LowSellPrices, info.LowSellPrices);
+            Assert.AreEqual(expected.HighSellPrices, info.HighSellPrices);
+            Assert.AreEqual(expected.LowSellPrices, info.LowSellPrices);
+            Assert.AreEqual(expected.OneDayAverage, info.OneDayAverage);
+            Assert.AreEqual(expected.SevenDayAverage, info.SevenDayAverage);
+        }
+
+        [Test]
+        public void GetItemPriceInfo_WithEmptyResponse_ReturnsNull()
+        {
+            MockResponse(string.Empty);
+            PriceInfo info = _aruaApi.GetItemPriceInfo(_testItem);
+            Assert.IsNull(info);
         }
 
         private void MockResponse(string response)
