@@ -69,6 +69,7 @@
     <Compile Include="Data\ArtsApiTestData.cs" />
     <Compile Include="Data\ItemTestData.cs" />
     <Compile Include="Data\PriceInfoTestData.cs" />
+    <Compile Include="Data\StockEntryTestData.cs" />
     <Compile Include="Data\StockItemGroupTestData.cs" />
     <Compile Include="Data\StockItemTestData.cs" />
     <Compile Include="PriceInfo_Tests.cs" />
