@@ -58,6 +58,14 @@ namespace AruaRoseToolSuiteLibrary_Tests
         }
 
         [Test]
+        public void GetAllStockItems_WithInvalidResponse_ReturnsNull()
+        {
+            MockGetAllResponse(ArtsApiTestData.INVALID_RESPONSE);
+            List<StockItem> stockItems = _artsApi.GetAllStockItems();
+            Assert.IsNull(stockItems);
+        }
+
+        [Test]
         public void GetAllStockItems_WithEmptyResponse_ReturnsNull()
         {
             MockGetAllResponse(string.Empty);
@@ -65,10 +73,52 @@ namespace AruaRoseToolSuiteLibrary_Tests
             Assert.IsNull(stockItems);
         }
 
+        [Test]
+        public void CreateStockEntry_WithSuccessfulResponse_ReturnsTrue()
+        {
+            StockEntry entry = StockEntryTestData.Generate();
+            MockPutResponse(ArtsApiTestData.CREATE_STOCK_ENTRY_SUCCESSFUL_RESPONSE);
+            bool success = _artsApi.CreateStockItemEntry(entry);
+            Assert.IsTrue(success);
+        }
+
+        [Test]
+        public void CreateStockEntry_WithUnsuccessfulResponse_ReturnsFalse()
+        {
+            StockEntry entry = StockEntryTestData.Generate();
+            MockPutResponse(ArtsApiTestData.CREATE_STOCK_ENTRY_UNSUCCESSFUL_RESPONSE);
+            bool success = _artsApi.CreateStockItemEntry(entry);
+            Assert.IsFalse(success);
+        }
+
+        [Test]
+        public void CreateStockEntry_WithInvalidResponse_ReturnsFalse()
+        {
+            StockEntry entry = StockEntryTestData.Generate();
+            MockPutResponse(ArtsApiTestData.INVALID_RESPONSE);
+            bool success = _artsApi.CreateStockItemEntry(entry);
+            Assert.IsFalse(success);
+        }
+
+        [Test]
+        public void CreateStockEntry_WithEmptyResponse_ReturnsFalse()
+        {
+            StockEntry entry = StockEntryTestData.Generate();
+            MockPutResponse(string.Empty);
+            bool success = _artsApi.CreateStockItemEntry(entry);
+            Assert.IsFalse(success);
+        }
+
         private void MockGetAllResponse(string response)
         {
             _mockRestClient.Setup(x => x.Get(It.IsAny<string>()))
                 .Returns(new HttpResponse("www.test.com", System.Net.HttpStatusCode.OK, response, HttpVerb.GET));
+        }
+
+        private void MockPutResponse(string response)
+        {
+            _mockRestClient.Setup(x => x.Put(It.IsAny<string>(), It.IsAny<JsonBodyParameter>()))
+                .Returns(new HttpResponse("www.test.com", System.Net.HttpStatusCode.OK, response, HttpVerb.PUT));
         }
     }
 }

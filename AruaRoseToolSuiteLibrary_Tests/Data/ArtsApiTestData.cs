@@ -24,5 +24,22 @@ namespace AruaRoseToolSuiteLibrary_Tests.Data
             ""status"": 1,
             ""stockItems"": null
         }}";
+
+        public static string GET_STOCK_ETRY_HISTORY_NO_RESULTS_RESPONSE = $@"{{
+            ""status"": 0,
+            ""stockItemEntryHistory"": []
+        }}";
+
+        public static string CREATE_STOCK_ENTRY_SUCCESSFUL_RESPONSE = $@"{{
+            ""status"": 0
+        }}";
+
+        public static string CREATE_STOCK_ENTRY_UNSUCCESSFUL_RESPONSE = $@"{{
+            ""status"": 1020
+        }}";
+
+        public static string INVALID_RESPONSE = $@"{{
+            ""blah"": ""blah""
+        }}";
     }
 }
