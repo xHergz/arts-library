@@ -40,7 +40,7 @@ namespace AruaRoseToolSuiteLibrary_Tests
         }
 
         [Test]
-        public void Constructor_WithEmptyJson_ReturnsNull()
+        public void Constructor_WithEmptyString_ReturnsNull()
         {
             _stockItem = JsonConvert.DeserializeObject<StockItem>(string.Empty);
             Assert.IsNull(_stockItem);

@@ -20,6 +20,8 @@ namespace AruaRoseToolSuiteLibrary.Data
 
         public int DataPoints { get; private set; }
 
+        public decimal? AverageChangeFromPreviousDay { get; private set; }
+
         public StockEntry(int stockItemId, DateTime entryDate, decimal averagePrice, decimal highestPrice,
             decimal lowestPrice, int dataPoints)
         {
@@ -30,11 +32,12 @@ namespace AruaRoseToolSuiteLibrary.Data
             HighestPrice = highestPrice;
             LowestPrice = lowestPrice;
             DataPoints = dataPoints;
+            AverageChangeFromPreviousDay = null;
         }
 
         [JsonConstructor]
         public StockEntry(int stockEntryId, int stockItemId, DateTime entryDate, decimal averagePrice,
-            decimal highestPrice, decimal lowestPrice, int dataPoints)
+            decimal highestPrice, decimal lowestPrice, int dataPoints, decimal? averageChangeFromPreviousDay)
         {
             StockEntryId = stockEntryId;
             StockItemId = stockItemId;
@@ -43,6 +46,7 @@ namespace AruaRoseToolSuiteLibrary.Data
             HighestPrice = highestPrice;
             LowestPrice = lowestPrice;
             DataPoints = dataPoints;
+            AverageChangeFromPreviousDay = averageChangeFromPreviousDay;
         }
     }
 }

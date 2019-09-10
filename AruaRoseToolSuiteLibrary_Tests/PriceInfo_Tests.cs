@@ -61,7 +61,7 @@ namespace AruaRoseToolSuiteLibrary_Tests
         }
 
         [Test]
-        public void Constructor_WithEmptyResponseJson_ReturnsNull()
+        public void Constructor_WithEmptyString_ReturnsNull()
         {
             _priceInfo = JsonConvert.DeserializeObject<PriceInfo>(string.Empty);
             Assert.IsNull(_priceInfo);

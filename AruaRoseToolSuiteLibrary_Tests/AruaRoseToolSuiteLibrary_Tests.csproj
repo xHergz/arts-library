@@ -74,6 +74,7 @@
     <Compile Include="Data\StockItemTestData.cs" />
     <Compile Include="PriceInfo_Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StockEntry_Tests.cs" />
     <Compile Include="StockItem_Tests.cs" />
   </ItemGroup>
   <ItemGroup>
