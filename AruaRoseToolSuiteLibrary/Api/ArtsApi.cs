@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using AruaRoseToolSuiteLibrary.Data;
-using HergBot.RestClient;
-using HergBot.RestClient.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+
+using AruaRoseToolSuiteLibrary.Data;
+using HergBot.Logging;
+using HergBot.RestClient;
+using HergBot.RestClient.Http;
 
 namespace AruaRoseToolSuiteLibrary.Api
 {
@@ -41,11 +43,14 @@ namespace AruaRoseToolSuiteLibrary.Api
 
         private IRestClient _restClient;
 
+        private ILogger _logger;
+
         public static string DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-        public ArtsApi(IRestClient client)
+        public ArtsApi(IRestClient client, ILogger logger)
         {
             _restClient = client;
+            _logger = logger;
         }
 
         public List<StockItem> GetAllStockItems()
@@ -53,8 +58,12 @@ namespace AruaRoseToolSuiteLibrary.Api
             string ALL_STOCK_ITEMS_URL = $"{ARTS_API_URL}/{STOCK_ITEM_ENDPOINT}";
 
             HttpResponse allStockItemsResponse = _restClient.Get(ALL_STOCK_ITEMS_URL);
+            _logger.LogInfo($"GET {allStockItemsResponse.RequestUrl}", "GetAllStockItems");
+            _logger.LogInfo($"Status: {allStockItemsResponse.Status}", "GetAllStockItems");
+            _logger.LogInfo($"Response: {allStockItemsResponse.Response}", "GetAllStockItems");
             if (!allStockItemsResponse.Success)
             {
+                _logger.LogError("Get all stock items failed.", "GetAllStockItems");
                 return null;
             }
 
@@ -73,8 +82,13 @@ namespace AruaRoseToolSuiteLibrary.Api
             body.AddValue(DATA_POINTS_KEY, entry.StockItemId.ToString());
 
             HttpResponse createStockEntryResponse = _restClient.Put(CREATE_STOCK_ENTRY_ENDPOINT, body);
+            _logger.LogInfo($"PUT {createStockEntryResponse.RequestUrl}", "CreateStockItemEntry");
+            _logger.LogInfo($"Body: {body.ToString()}");
+            _logger.LogInfo($"Status: {createStockEntryResponse.Status}", "CreateStockItemEntry");
+            _logger.LogInfo($"Response: {createStockEntryResponse.Response}", "CreateStockItemEntry");
             if (!createStockEntryResponse.Success)
             {
+                _logger.LogInfo("Create stock item entry failed.", "CreateStockItemEntry");
                 return false;
             }
 
@@ -82,22 +96,28 @@ namespace AruaRoseToolSuiteLibrary.Api
             return status == SUCCESS_STATUS;
         }
 
-        private int? ParseStatusResult(string resultJson)
+        private JObject ParseJson(string json)
         {
-            JObject parsedJson = null;
-
             try
             {
-                parsedJson = JObject.Parse(resultJson);
+                return JObject.Parse(json);
             }
             catch (JsonReaderException exception)
             {
                 // Failed to parse the JSON, probably due to invalid JSON
+                _logger.LogError("Failed to parse the JSON, probably due to invalid JSON.", "ParseJson");
+                _logger.LogException(exception, "ParseJson");
                 return null;
             }
+        }
+
+        private int? ParseStatusResult(string resultJson)
+        {
+            JObject parsedJson = ParseJson(resultJson);
 
             if (!parsedJson.ContainsKey(STATUS_KEY))
             {
+                _logger.LogError($"Status key '{STATUS_KEY}' not found.", "ParseStatusResult");
                 return null;
             }
 
@@ -107,24 +127,16 @@ namespace AruaRoseToolSuiteLibrary.Api
         private List<T> ParseResultList<T>(string resultJson, string resultKey)
         {
             List<T> resultList = new List<T>();
-            JObject parsedJson = null;
-
-            try
-            {
-                parsedJson = JObject.Parse(resultJson);
-            }
-            catch(JsonReaderException exception)
-            {
-                // Failed to parse the JSON, probably due to invalid JSON
-                return null;
-            }
+            JObject parsedJson = ParseJson(resultJson);
             
             if (!parsedJson.ContainsKey(STATUS_KEY))
             {
+                _logger.LogError($"Status key '{STATUS_KEY}' not found.", "ParseResultList");
                 return null;
             }
-            else if (!parsedJson.ContainsKey(STOCK_ITEMS_KEY))
+            else if (!parsedJson.ContainsKey(resultKey))
             {
+                _logger.LogError($"Result key '{resultKey}' not found.", "ParseResultList");
                 return null;
             }
 
@@ -133,6 +145,7 @@ namespace AruaRoseToolSuiteLibrary.Api
 
             if (status != SUCCESS_STATUS)
             {
+                _logger.LogError($"Status returned was unsuccessful: '{status}'", "ParseResultList");
                 return null;
             }
 

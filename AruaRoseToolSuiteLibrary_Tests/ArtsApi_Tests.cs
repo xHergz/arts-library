@@ -5,6 +5,7 @@ using Moq;
 using NUnit.Framework;
 
 using AruaRoseToolSuiteLibrary.Api;
+using HergBot.Logging;
 using HergBot.RestClient;
 using HergBot.RestClient.Http;
 using AruaRoseToolSuiteLibrary.Data;
@@ -16,13 +17,17 @@ namespace AruaRoseToolSuiteLibrary_Tests
     {
         private Mock<IRestClient> _mockRestClient;
 
+        private Mock<ILogger> _mockLogger;
+
         private ArtsApi _artsApi;
 
         [SetUp]
         public void SetUp()
         {
             _mockRestClient = new Mock<IRestClient>();
-            _artsApi = new ArtsApi(_mockRestClient.Object);
+            _mockLogger = new Mock<ILogger>();
+            _artsApi = new ArtsApi(_mockRestClient.Object, _mockLogger.Object);
+            _mockLogger.Setup(x => x.LogInfo(It.IsAny<string>(), It.IsAny<string>()));
         }
 
         [Test]
