@@ -32,9 +32,8 @@ namespace AruaRoseToolSuiteLibrary.Api
         public PriceInfo GetItemPriceInfo(StockItem item)
         {
             QueryParameter itemPriceQuery = ConstructApiQuery(_aruaApiKey, ITEM_TYPE, item.ItemId.ToString());
-            HttpResponse itemPriceResponse = null;
 
-            itemPriceResponse = _restClient.Get(ARUA_API_URL, itemPriceQuery);
+            HttpResponse itemPriceResponse = _restClient.Get(ARUA_API_URL, itemPriceQuery);
             if (!itemPriceResponse.Success)
             {
                 return null;
