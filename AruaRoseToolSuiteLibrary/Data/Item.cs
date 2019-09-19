@@ -18,5 +18,10 @@ namespace AruaRoseToolSuiteLibrary.Data
             Name = name;
             IconFileName = iconFile;
         }
+
+        public override string ToString()
+        {
+            return $"Item: ItemId = {ItemId}, Name = '{Name}', IconFileName = '{IconFileName}'";
+        }
     }
 }

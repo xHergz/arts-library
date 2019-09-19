@@ -50,5 +50,13 @@ namespace AruaRoseToolSuiteLibrary.Data
             OneDayAverage = average_1day;
             SevenDayAverage = average_7day;
         }
+
+        public override string ToString()
+        {
+            return $"PriceInfo: Success = {Success}, Error = '{Error}', ItemId = {ItemId}, ItemName = '{ItemName}', HighSellPrices({_highSellPrices.Count}) = "
+                + $"[{string.Join(", ", _highSellPrices)}], LowSellPrices({_lowSellPrices.Count}) = [{string.Join(", ", _lowSellPrices)}], "
+                + $"HighBuyPrices({_highBuyPrices.Count}) = [{string.Join(", ", _highBuyPrices)}], LowBuyPrices({_lowBuyPrices.Count}) = "
+                + $"[{string.Join(", ", _lowBuyPrices)}], OneDayAverage = {OneDayAverage}, SevenDayAverage = {SevenDayAverage}";
+        }
     }
 }

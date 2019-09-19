@@ -32,5 +32,11 @@ namespace AruaRoseToolSuiteLibrary.Data
             DateAdded = dateAdded;
             IsTracked = isTracked;
         }
+
+        public override string ToString()
+        {
+            return $"StockItem: StockItemId = {StockItemId}, StockItemGroupId = {StockItemGroupId}, ItemId = {ItemId}, Name = '{Name}', "
+                + $"ShortName = '{ShortName}', DateAdded = {DateAdded}, IsTracked = {IsTracked}";
+        }
     }
 }
