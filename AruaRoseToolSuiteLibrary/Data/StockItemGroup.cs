@@ -14,5 +14,10 @@ namespace AruaRoseToolSuiteLibrary.Data
             StockItemGroupId = stockItemGroupId;
             GroupName = groupName;
         }
+
+        public override string ToString()
+        {
+            return $"StockitemGroup: StockItemGroupId = {StockItemGroupId}, GroupName = {GroupName}";
+        }
     }
 }

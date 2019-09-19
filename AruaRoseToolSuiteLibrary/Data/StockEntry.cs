@@ -48,5 +48,12 @@ namespace AruaRoseToolSuiteLibrary.Data
             DataPoints = dataPoints;
             AverageChangeFromPreviousDay = averageChangeFromPreviousDay;
         }
+
+        public override string ToString()
+        {
+            return $"StockEntry: StockEntryId = {StockEntryId}, StockItemId = {StockItemId}, EntryDate = {EntryDate}, AveragePrice = {AveragePrice}, "
+                + $"HighestPrice = {HighestPrice}, LowestPrice = {LowestPrice}, DataPoints = {DataPoints}, "
+                + $"AvergaeChangeFromPreviousDay = {AverageChangeFromPreviousDay}";
+        }
     }
 }

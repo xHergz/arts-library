@@ -66,5 +66,24 @@ namespace AruaRoseToolSuiteLibrary_Tests
             _priceInfo = JsonConvert.DeserializeObject<PriceInfo>(string.Empty);
             Assert.IsNull(_priceInfo);
         }
+
+        [Test]
+        public void ToString_WithSuccesPriceInfo_ReturnsFormattedString()
+        {
+            string expected = $"PriceInfo: Success = True, Error = '', ItemId = {ItemTestData.ITEM_ID}, ItemName = '{ItemTestData.ITEM_NAME}', "
+                + $"HighSellPrices({PriceInfoTestData.HIGH_SELL_PRICES.Count}) = [{string.Join(", ", PriceInfoTestData.HIGH_SELL_PRICES)}], "
+                + $"LowSellPrices({PriceInfoTestData.LOW_SELL_PRICES.Count}) = [{string.Join(", ", PriceInfoTestData.LOW_SELL_PRICES)}], "
+                + $"HighBuyPrices({PriceInfoTestData.HIGH_BUY_PRICES.Count}) = [{string.Join(", ", PriceInfoTestData.HIGH_BUY_PRICES)}], "
+                + $"LowBuyPrices({PriceInfoTestData.LOW_BUY_PRICES.Count}) = [{string.Join(", ", PriceInfoTestData.LOW_BUY_PRICES)}], "
+                + $"OneDayAverage = {PriceInfoTestData.ONE_DAY_AVERAGE}, SevenDayAverage = {PriceInfoTestData.SEVEN_DAY_AVERAGE}";
+            _priceInfo = JsonConvert.DeserializeObject<PriceInfo>(PriceInfoTestData.SUCCESS_PRICE_INFO_JSON);
+            Assert.AreEqual(expected, _priceInfo.ToString());
+        }
+
+        [Test]
+        public void ToString_WithErrorPriceInfo_ReturnsFormattedString()
+        {
+            _priceInfo = JsonConvert.DeserializeObject<PriceInfo>(PriceInfoTestData.ERROR_PRICE_INFO_JSON);
+        }
     }
 }

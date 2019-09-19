@@ -111,27 +111,43 @@ namespace AruaRoseToolSuiteLibrary.Api
             }
         }
 
-        private int? ParseStatusResult(string resultJson)
+        private int? ParseStatus(JObject json)
         {
-            JObject parsedJson = ParseJson(resultJson);
-
-            if (!parsedJson.ContainsKey(STATUS_KEY))
+            if (json == null)
             {
-                _logger.LogError($"Status key '{STATUS_KEY}' not found.", "ParseStatusResult");
+                _logger.LogError("Invalid json object given.", "ParseStatus");
                 return null;
             }
 
-            return Convert.ToInt32(parsedJson[STATUS_KEY]);
+            if (!json.ContainsKey(STATUS_KEY))
+            {
+                _logger.LogError($"Status key '{STATUS_KEY}' not found.", "ParseStatus");
+                return null;
+            }
+
+            int status = Convert.ToInt32(json[STATUS_KEY]);
+            _logger.LogInfo($"Parsed a status of '{status}'.", "ParseStatus");
+            if (status != SUCCESS_STATUS)
+            {
+                _logger.LogError($"Status returned was unsuccessful: '{status}'", "ParseResultList");
+            }
+            return status;
+        }
+
+        private int? ParseStatusResult(string resultJson)
+        {
+            JObject parsedJson = ParseJson(resultJson);
+            return ParseStatus(parsedJson);
         }
 
         private List<T> ParseResultList<T>(string resultJson, string resultKey)
         {
             List<T> resultList = new List<T>();
             JObject parsedJson = ParseJson(resultJson);
-            
-            if (!parsedJson.ContainsKey(STATUS_KEY))
+            int? status = ParseStatus(parsedJson);
+
+            if (!status.HasValue || status != SUCCESS_STATUS)
             {
-                _logger.LogError($"Status key '{STATUS_KEY}' not found.", "ParseResultList");
                 return null;
             }
             else if (!parsedJson.ContainsKey(resultKey))
@@ -140,19 +156,14 @@ namespace AruaRoseToolSuiteLibrary.Api
                 return null;
             }
 
-            int status = Convert.ToInt32(parsedJson[STATUS_KEY]);
+            
             IList<JToken> results = parsedJson[resultKey].Children().ToList();
-
-            if (status != SUCCESS_STATUS)
-            {
-                _logger.LogError($"Status returned was unsuccessful: '{status}'", "ParseResultList");
-                return null;
-            }
 
             foreach (JToken result in results)
             {
                 resultList.Add(result.ToObject<T>());
             }
+            _logger.LogInfo($"Parsed {resultList.Count} results with key '{resultKey}'.", "ParseResultList");
 
             return resultList;
         }

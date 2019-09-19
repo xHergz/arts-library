@@ -4,6 +4,7 @@ using NUnit.Framework;
 using AruaRoseToolSuiteLibrary.Api;
 using AruaRoseToolSuiteLibrary.Data;
 using AruaRoseToolSuiteLibrary_Tests.Data;
+using HergBot.Logging;
 using HergBot.RestClient;
 using HergBot.RestClient.Http;
 
@@ -15,6 +16,8 @@ namespace AruaRoseToolSuiteLibrary_Tests
 
         private Mock<IRestClient> _mockRestClient;
 
+        private Mock<ILogger> _mockLogger;
+
         private AruaApi _aruaApi;
 
         private StockItem _testItem;
@@ -23,7 +26,8 @@ namespace AruaRoseToolSuiteLibrary_Tests
         public void SetUp()
         {
             _mockRestClient = new Mock<IRestClient>();
-            _aruaApi = new AruaApi(_mockRestClient.Object, TEST_KEY);
+            _mockLogger = new Mock<ILogger>();
+            _aruaApi = new AruaApi(_mockRestClient.Object, _mockLogger.Object, TEST_KEY);
             _testItem = StockItemTestData.Generate();
         }
 
