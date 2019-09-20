@@ -1,5 +1,6 @@
-﻿using AruaRoseToolSuiteLibrary.Data;
-using System;
+﻿using System;
+
+using AruaRoseToolSuiteLibrary.Data;
 
 namespace AruaRoseToolSuiteLibrary_Tests.Data
 {

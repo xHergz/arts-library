@@ -61,5 +61,36 @@ namespace AruaRoseToolSuiteLibrary_Tests
             _stockEntry = JsonConvert.DeserializeObject<StockEntry>(string.Empty);
             Assert.IsNull(_stockEntry);
         }
+
+        [Test]
+        public void ToString_WithAverageChange_ReturnsFormattedString()
+        {
+            string expected = $"StockEntry: StockEntryId = {StockEntryTestData.STOCK_ENTRY_ID}, StockItemId = {StockItemTestData.STOCK_ITEM_ID}, "
+                + $"EntryDate = {StockEntryTestData.ENTRY_DATE}, AveragePrice = {StockEntryTestData.AVERAGE_PRICE}, HighestPrice = "
+                + $"{StockEntryTestData.HIGHEST_PRICE}, LowestPrice = {StockEntryTestData.LOWEST_PRICE}, DataPoints = {StockEntryTestData.DATA_POINTS}, "
+                + $"AvergaeChangeFromPreviousDay = {StockEntryTestData.AVERAGE_CHANGE_FROM_PREVIOUS_DAY}";
+            _stockEntry = JsonConvert.DeserializeObject<StockEntry>(StockEntryTestData.VALID_STOCK_ENTRY_WITH_AVERAGE_CHANGE_JSON);
+            Assert.AreEqual(expected, _stockEntry.ToString());
+        }
+
+        [Test]
+        public void ToString_WithoutAverageChange_ReturnsFormattedString()
+        {
+            string expected = $"StockEntry: StockEntryId = {StockEntryTestData.STOCK_ENTRY_ID}, StockItemId = {StockItemTestData.STOCK_ITEM_ID}, "
+                + $"EntryDate = {StockEntryTestData.ENTRY_DATE}, AveragePrice = {StockEntryTestData.AVERAGE_PRICE}, HighestPrice = "
+                + $"{StockEntryTestData.HIGHEST_PRICE}, LowestPrice = {StockEntryTestData.LOWEST_PRICE}, DataPoints = {StockEntryTestData.DATA_POINTS}, "
+                + $"AvergaeChangeFromPreviousDay = null";
+            _stockEntry = JsonConvert.DeserializeObject<StockEntry>(StockEntryTestData.VALID_STOCK_ENTRY_WITHOUT_AVERAGE_CHANGE_JSON);
+            Assert.AreEqual(expected, _stockEntry.ToString());
+        }
+
+        [Test]
+        public void ToString_WithAnInvalidStockEntry_ReturnsFormattedString()
+        {
+            string expected = $"StockEntry: StockEntryId = 0, StockItemId = 0, EntryDate = {DateTime.MinValue.ToString(ArtsApi.DATE_FORMAT)}, "
+                + $"AveragePrice = 0, HighestPrice = 0, LowestPrice = 0, DataPoints = 0, AvergaeChangeFromPreviousDay = null";
+            _stockEntry = JsonConvert.DeserializeObject<StockEntry>(StockEntryTestData.INVALID_STOCK_ENTRY_JSON);
+            Assert.AreEqual(expected, _stockEntry.ToString());
+        }
     }
 }

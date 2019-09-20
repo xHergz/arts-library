@@ -2,6 +2,8 @@
 
 using Newtonsoft.Json;
 
+using AruaRoseToolSuiteLibrary.Api;
+
 namespace AruaRoseToolSuiteLibrary.Data
 {
     public class StockItem
@@ -36,7 +38,7 @@ namespace AruaRoseToolSuiteLibrary.Data
         public override string ToString()
         {
             return $"StockItem: StockItemId = {StockItemId}, StockItemGroupId = {StockItemGroupId}, ItemId = {ItemId}, Name = '{Name}', "
-                + $"ShortName = '{ShortName}', DateAdded = {DateAdded}, IsTracked = {IsTracked}";
+                + $"ShortName = '{ShortName}', DateAdded = {DateAdded.ToString(ArtsApi.DATE_FORMAT)}, IsTracked = {IsTracked}";
         }
     }
 }

@@ -45,5 +45,24 @@ namespace AruaRoseToolSuiteLibrary_Tests
             _stockItem = JsonConvert.DeserializeObject<StockItem>(string.Empty);
             Assert.IsNull(_stockItem);
         }
+
+        [Test]
+        public void ToString_WithValidStockItem_ReturnsFormattedString()
+        {
+            string expected = $"StockItem: StockItemId = {StockItemTestData.STOCK_ITEM_ID}, StockItemGroupId = {StockItemGroupTestData.STOCK_ITEM_GROUP_ID}, "
+                + $"ItemId = {ItemTestData.ITEM_ID}, Name = '{ItemTestData.ITEM_NAME}', ShortName = '{StockItemTestData.SHORT_NAME}', DateAdded = "
+                + $"{StockItemTestData.DATE_ADDED}, IsTracked = {Convert.ToBoolean(StockItemTestData.IS_TRACKED)}";
+            _stockItem = JsonConvert.DeserializeObject<StockItem>(StockItemTestData.VALID_STOCK_ITEM_JSON);
+            Assert.AreEqual(expected, _stockItem.ToString());
+        }
+
+        [Test]
+        public void ToString_WithInvalidStockItem_ReturnsFormattedString()
+        {
+            string expected = $"StockItem: StockItemId = 0, StockItemGroupId = 0, ItemId = 0, Name = '', ShortName = '', DateAdded = "
+                + $"{DateTime.MinValue.ToString(ArtsApi.DATE_FORMAT)}, IsTracked = False";
+            _stockItem = JsonConvert.DeserializeObject<StockItem>(StockItemTestData.INVALID_STOCK_ITEM_JSON);
+            Assert.AreEqual(expected, _stockItem.ToString());
+        }
     }
 }
