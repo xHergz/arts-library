@@ -2,6 +2,8 @@
 
 using Newtonsoft.Json;
 
+using AruaRoseToolSuiteLibrary.Api;
+
 namespace AruaRoseToolSuiteLibrary.Data
 {
     public class StockEntry
@@ -51,9 +53,10 @@ namespace AruaRoseToolSuiteLibrary.Data
 
         public override string ToString()
         {
-            return $"StockEntry: StockEntryId = {StockEntryId}, StockItemId = {StockItemId}, EntryDate = {EntryDate}, AveragePrice = {AveragePrice}, "
-                + $"HighestPrice = {HighestPrice}, LowestPrice = {LowestPrice}, DataPoints = {DataPoints}, "
-                + $"AvergaeChangeFromPreviousDay = {AverageChangeFromPreviousDay}";
+            string averageChangeString = AverageChangeFromPreviousDay.HasValue ? AverageChangeFromPreviousDay.ToString() : "null";
+            return $"StockEntry: StockEntryId = {StockEntryId}, StockItemId = {StockItemId}, EntryDate = {EntryDate.ToString(ArtsApi.DATE_FORMAT)}, "
+                + $"AveragePrice = {AveragePrice}, HighestPrice = {HighestPrice}, LowestPrice = {LowestPrice}, DataPoints = {DataPoints}, "
+                + $"AvergaeChangeFromPreviousDay = {averageChangeString}";
         }
     }
 }

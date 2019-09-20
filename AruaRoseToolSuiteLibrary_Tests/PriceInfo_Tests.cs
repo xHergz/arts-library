@@ -83,7 +83,21 @@ namespace AruaRoseToolSuiteLibrary_Tests
         [Test]
         public void ToString_WithErrorPriceInfo_ReturnsFormattedString()
         {
+            string expected = $"PriceInfo: Success = False, Error = '{PriceInfoTestData.ERROR}', ItemId = 0, ItemName = '', "
+                + $"HighSellPrices(0) = [], LowSellPrices(0) = [], HighBuyPrices(0) = [], LowBuyPrices(0) = [], "
+                + $"OneDayAverage = 0, SevenDayAverage = 0";
             _priceInfo = JsonConvert.DeserializeObject<PriceInfo>(PriceInfoTestData.ERROR_PRICE_INFO_JSON);
+            Assert.AreEqual(expected, _priceInfo.ToString());
+        }
+
+        [Test]
+        public void ToString_WithInvalidPriceInfo_ReturnsFormattedString()
+        {
+            string expected = $"PriceInfo: Success = False, Error = '', ItemId = 0, ItemName = '', "
+                + $"HighSellPrices(0) = [], LowSellPrices(0) = [], HighBuyPrices(0) = [], LowBuyPrices(0) = [], "
+                + $"OneDayAverage = 0, SevenDayAverage = 0";
+            _priceInfo = JsonConvert.DeserializeObject<PriceInfo>(PriceInfoTestData.INVALID_PRICE_INFO_JSON);
+            Assert.AreEqual(expected, _priceInfo.ToString());
         }
     }
 }
