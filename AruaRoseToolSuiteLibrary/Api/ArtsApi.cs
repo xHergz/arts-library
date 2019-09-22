@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+* PROJECT: ARTS Library
+* PROGRAMMER: Justin
+* FIRST VERSION: 22/09/2019
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,10 +18,11 @@ using HergBot.RestClient.Http;
 
 namespace AruaRoseToolSuiteLibrary.Api
 {
+    /// <summary>
+    /// Encapsulates the calls available from the ARTS API
+    /// </summary>
     public class ArtsApi
     {
-        private const string ARTS_API_URL = "https://api.aruarosetoolsuite.localhost";
-
         private const string STOCK_ITEM_ENDPOINT = "stock-item";
 
         private const string STOCK_ENTRY_ENDPOINT = "stock-entry";
@@ -34,8 +41,6 @@ namespace AruaRoseToolSuiteLibrary.Api
 
         private const string STATUS_KEY = "status";
 
-        private const string STOCK_ITEM_KEY = "stockItem";
-
         private const string STOCK_ITEMS_KEY = "stockItems";
 
         private const int SUCCESS_STATUS = 0;
@@ -44,17 +49,30 @@ namespace AruaRoseToolSuiteLibrary.Api
 
         private ILogger _logger;
 
+        private string _artsApiUrl;
+
         public static string DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-        public ArtsApi(IRestClient client, ILogger logger)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="client">The rest client to use for communicating with the API</param>
+        /// <param name="logger">The logger</param>
+        /// <param name="apiUrl">The root of the API url</param>
+        public ArtsApi(IRestClient client, ILogger logger, string apiUrl)
         {
             _restClient = client;
             _logger = logger;
+            _artsApiUrl = apiUrl;
         }
 
+        /// <summary>
+        /// Gets a list of all the stock items on the server
+        /// </summary>
+        /// <returns>List of StockItem objects</returns>
         public List<StockItem> GetAllStockItems()
         {
-            string ALL_STOCK_ITEMS_URL = $"{ARTS_API_URL}/{STOCK_ITEM_ENDPOINT}";
+            string ALL_STOCK_ITEMS_URL = $"{_artsApiUrl}/{STOCK_ITEM_ENDPOINT}";
 
             HttpResponse allStockItemsResponse = _restClient.Get(ALL_STOCK_ITEMS_URL);
             _logger.LogInfo($"GET {allStockItemsResponse.RequestUrl}", "GetAllStockItems");
@@ -69,9 +87,14 @@ namespace AruaRoseToolSuiteLibrary.Api
             return ParseResultList<StockItem>(allStockItemsResponse.Response, STOCK_ITEMS_KEY);
         }
 
+        /// <summary>
+        /// Creates a stock entry
+        /// </summary>
+        /// <param name="entry">The entry</param>
+        /// <returns>True if successful, false if not</returns>
         public bool CreateStockItemEntry(StockEntry entry)
         {
-            string CREATE_STOCK_ENTRY_ENDPOINT = $"{ARTS_API_URL}/{STOCK_ENTRY_ENDPOINT}";
+            string CREATE_STOCK_ENTRY_ENDPOINT = $"{_artsApiUrl}/{STOCK_ENTRY_ENDPOINT}";
             JsonBodyParameter body = new JsonBodyParameter();
             body.AddValue(STOCK_ITEM_ID_KEY, entry.StockItemId.ToString());
             body.AddValue(ENTRY_DATE_KEY, entry.EntryDate.ToString());

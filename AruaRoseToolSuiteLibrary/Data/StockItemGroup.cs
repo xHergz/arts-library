@@ -1,4 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿/*
+* PROJECT: ARTS Library
+* PROGRAMMER: Justin
+* FIRST VERSION: 22/09/2019
+*/
+
+using Newtonsoft.Json;
 
 namespace AruaRoseToolSuiteLibrary.Data
 {
