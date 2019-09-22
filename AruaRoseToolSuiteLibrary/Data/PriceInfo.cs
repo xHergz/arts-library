@@ -1,4 +1,10 @@
-﻿using System.Collections.Generic;
+﻿/*
+* PROJECT: ARTS Library
+* PROGRAMMER: Justin
+* FIRST VERSION: 22/09/2019
+*/
+
+using System.Collections.Generic;
 
 using Newtonsoft.Json;
 

@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+* PROJECT: ARTS Library
+* PROGRAMMER: Justin
+* FIRST VERSION: 22/09/2019
+*/
+
+using System;
 
 using Newtonsoft.Json;
 

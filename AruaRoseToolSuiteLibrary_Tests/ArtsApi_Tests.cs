@@ -14,6 +14,8 @@ namespace AruaRoseToolSuiteLibrary_Tests
 {
     public class ArtsApi_Tests
     {
+        private const string FAKE_URL = "api.fake.localhost";
+
         private Mock<IRestClient> _mockRestClient;
 
         private Mock<ILogger> _mockLogger;
@@ -25,7 +27,7 @@ namespace AruaRoseToolSuiteLibrary_Tests
         {
             _mockRestClient = new Mock<IRestClient>();
             _mockLogger = new Mock<ILogger>();
-            _artsApi = new ArtsApi(_mockRestClient.Object, _mockLogger.Object);
+            _artsApi = new ArtsApi(_mockRestClient.Object, _mockLogger.Object, FAKE_URL);
             _mockLogger.Setup(x => x.LogInfo(It.IsAny<string>(), It.IsAny<string>()));
         }
 

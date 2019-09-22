@@ -1,4 +1,10 @@
-﻿namespace AruaRoseToolSuiteLibrary.Data
+﻿/*
+* PROJECT: ARTS Library
+* PROGRAMMER: Justin
+* FIRST VERSION: 22/09/2019
+*/
+
+namespace AruaRoseToolSuiteLibrary.Data
 {
     public class Item
     {
