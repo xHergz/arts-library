@@ -76,11 +76,13 @@
     <Compile Include="ArtsApi_Tests.cs" />
     <Compile Include="AruaApi_Tests.cs" />
     <Compile Include="Data\ArtsApiTestData.cs" />
+    <Compile Include="Data\EmailReportingConfigurationData.cs" />
     <Compile Include="Data\ItemTestData.cs" />
     <Compile Include="Data\PriceInfoTestData.cs" />
     <Compile Include="Data\StockEntryTestData.cs" />
     <Compile Include="Data\StockItemGroupTestData.cs" />
     <Compile Include="Data\StockItemTestData.cs" />
+    <Compile Include="EmailReportingConfiguration_Tests.cs" />
     <Compile Include="PriceInfo_Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StockEntry_Tests.cs" />
