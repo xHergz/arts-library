@@ -18,8 +18,6 @@ namespace AruaRoseToolSuiteLibrary.Api
     /// </summary>
     public class AruaApi
     {
-        private const string ARUA_API_URL = "https://www.aruarose.com/api/";
-
         private const string API_KEY_KEY = "key";
 
         private const string TYPE_KEY = "type";
@@ -32,6 +30,8 @@ namespace AruaRoseToolSuiteLibrary.Api
 
         private ILogger _logger;
 
+        private string _aruaApiUrl;
+
         private string _aruaApiKey;
 
         /// <summary>
@@ -40,11 +40,12 @@ namespace AruaRoseToolSuiteLibrary.Api
         /// <param name="client">The rest client to use for communicating with the API</param>
         /// <param name="logger">The logger</param>
         /// <param name="apiKey">Key to access the API</param>
-        public AruaApi(IRestClient client, ILogger logger, string apiKey)
+        public AruaApi(IRestClient client, ILogger logger, string apiUrl, string apiKey)
         {
             // The Arua api doesn't use auth headers, it uses query args
             _restClient = client;
             _logger = logger;
+            _aruaApiUrl = apiUrl;
             _aruaApiKey = apiKey;
         }
 
@@ -57,7 +58,7 @@ namespace AruaRoseToolSuiteLibrary.Api
         {
             QueryParameter itemPriceQuery = ConstructApiQuery(_aruaApiKey, ITEM_TYPE, item.ItemId.ToString());
 
-            HttpResponse itemPriceResponse = _restClient.Get(ARUA_API_URL, itemPriceQuery);
+            HttpResponse itemPriceResponse = _restClient.Get(_aruaApiUrl, itemPriceQuery);
             _logger.LogInfo($"GET {itemPriceResponse.RequestUrl}", "GetItemPriceInfo");
             _logger.LogInfo($"Status: {itemPriceResponse.Status}", "GetItemPriceInfo");
             _logger.LogInfo($"Response: {itemPriceResponse.Response}", "GetItemPriceInfo");

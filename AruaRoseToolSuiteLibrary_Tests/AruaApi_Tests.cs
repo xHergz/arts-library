@@ -12,6 +12,8 @@ namespace AruaRoseToolSuiteLibrary_Tests
 {
     public class AruaApi_Tests
     {
+        private const string TEST_URL = "www.test.com/api/";
+
         private const string TEST_KEY = "test_key";
 
         private Mock<IRestClient> _mockRestClient;
@@ -27,7 +29,7 @@ namespace AruaRoseToolSuiteLibrary_Tests
         {
             _mockRestClient = new Mock<IRestClient>();
             _mockLogger = new Mock<ILogger>();
-            _aruaApi = new AruaApi(_mockRestClient.Object, _mockLogger.Object, TEST_KEY);
+            _aruaApi = new AruaApi(_mockRestClient.Object, _mockLogger.Object, TEST_URL, TEST_KEY);
             _testItem = StockItemTestData.Generate();
         }
 
