@@ -71,6 +71,12 @@ namespace AruaRoseToolSuiteLibrary.Api
             return JsonConvert.DeserializeObject<PriceInfo>(itemPriceResponse.Response);
         }
 
+        public void GetArmoryPriceInfo(StockItem item)
+        {
+            string armoryUrl = $"https:";
+            HttpResponse itemPriceResponse = _restClient.Get(_aruaApiUrl, itemPriceQuery);
+        }
+
         private QueryParameter ConstructApiQuery(string key, string type, string data)
         {
             QueryParameter query = new QueryParameter();
