@@ -30,7 +30,6 @@ export const getArmoryPriceHistory = async (/*item: StockItem*/): Promise<
               .replace(/(data:)|\[|\]|\n|\s|\'/g, "")
               .split(",")
               .filter((price) => !isEmpty(price));
-    console.log(dates, prices);
     if (isNil(dates) || isNil(prices)) {
         return null;
     }
@@ -41,6 +40,5 @@ export const getArmoryPriceHistory = async (/*item: StockItem*/): Promise<
             date: parse(dates[index], "dd/MM/yy", new Date()),
         });
     }
-    console.log(formattedPrices);
     return formattedPrices;
 };
